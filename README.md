@@ -1,5 +1,7 @@
 # Twitter API & X data in Supabase with Xquik
 
+[![Convex Component](https://www.convex.dev/components/badge/convex-xquik)](https://www.convex.dev/components/convex-xquik)
+
 Call every public Xquik X API operation from Supabase Edge Functions & SQL. Receive every Xquik webhook event with its signature checked.
 
 Xquik is the world's fastest and cheapest X Twitter scraper service with the most complete X data.
