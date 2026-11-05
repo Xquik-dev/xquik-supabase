@@ -2,10 +2,22 @@
 
 [![Convex Component](https://www.convex.dev/components/badge/convex-xquik)](https://www.convex.dev/components/convex-xquik)
 
-Call every public Xquik X API operation from Supabase Edge Functions & SQL. Receive every Xquik webhook event with its signature checked.
+Call every public Xquik Twitter API & X API operation from Supabase Edge Functions & SQL. Receive every Xquik webhook event with its signature checked.
 
 Xquik is the world's fastest and cheapest X Twitter scraper service with the most complete X data.
 Xquik charges only for delivered, unique, filter-matching results and never pads rows.
+
+## Install the Supabase Twitter toolkit with 1 command
+
+You need the [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started) & Docker. Get an API key & a webhook secret from your [Xquik account](https://xquik.com).
+
+```bash
+git clone https://github.com/Xquik-dev/xquik-supabase.git
+cd xquik-supabase
+XQUIK_API_KEY=xq_your_key XQUIK_WEBHOOK_SECRET=your_webhook_secret npx supabase start
+```
+
+The CLI also reads both values from a `.env` file in the project root. Git ignores that file.
 
 <!-- trust:start -->
 
@@ -43,18 +55,6 @@ Checked on 2026-10-28. See each number with its date & source on [xquik.com/trus
 - The `xquik-webhook` Edge Function. It checks each delivery's signature & stores each event once. It runs through `withSupabase` from `@supabase/server`. It writes with the secret key named `default`, so it keeps working after you turn off the legacy API keys.
 - Row level security on every regular table. Policies deny `anon` and `authenticated` each operation, and neither holds a grant, so only the service role reads them.
 
-## Start everything with 1 command
-
-You need the [Supabase CLI](https://supabase.com/docs/guides/local-development/cli/getting-started) & Docker. Get an API key & a webhook secret from your [Xquik account](https://xquik.com).
-
-```bash
-git clone https://github.com/Xquik-dev/xquik-supabase.git
-cd xquik-supabase
-XQUIK_API_KEY=xq_your_key XQUIK_WEBHOOK_SECRET=your_webhook_secret supabase start
-```
-
-The CLI also reads both values from a `.env` file in the project root. Git ignores that file.
-
 ## Call Xquik from an Edge Function
 
 `createXquik()` reads `XQUIK_API_KEY` & returns the typed client.
@@ -74,7 +74,7 @@ The client types every method & parameter. `askDocs` searches the Xquik docs. `g
 
 A function that imports `_shared/xquik.ts` lists `x-twitter-scraper` and `zod` in its own `deno.json`.
 
-## Read X data with SQL
+## Call the Twitter API from SQL
 
 `xquik.call` returns the JSON answer. `xquik.rows` returns 1 row per list item.
 
@@ -134,7 +134,7 @@ limit 1;
 
 `status` moves from `sent` to `succeeded` or `failed`. pg_net sends only GET, POST & DELETE, so run PATCH & PUT operations with `xquik.call`.
 
-## Receive webhook events
+## Receive Twitter webhook events
 
 The `xquik-webhook` function stores each event in `public.xquik_events`. It checks the signature, the timestamp & the nonce first.
 
@@ -143,7 +143,16 @@ The `xquik-webhook` function stores each event in `public.xquik_events`. It chec
 - A bad signature, an old timestamp or a reused nonce gets a 401.
 - A storage error gets a 503, so Xquik retries the delivery.
 
-Read events in order with `order by occurred_at, stream_event_id`. Put slow work in an `after` callback that you pass to `handleDelivery` in `supabase/functions/xquik-webhook/index.ts`, and wrap it in `EdgeRuntime.waitUntil`. It runs after Xquik gets its answer, once per new event.
+Read events in order with `order by occurred_at, stream_event_id`.
+
+```sql
+select *
+from public.xquik_events
+order by occurred_at, stream_event_id
+limit 10;
+```
+
+ Put slow work in an `after` callback that you pass to `handleDelivery` in `supabase/functions/xquik-webhook/index.ts`, and wrap it in `EdgeRuntime.waitUntil`. It runs after Xquik gets its answer, once per new event.
 
 Each webhook URL has its own secret. Set several secrets in `XQUIK_WEBHOOK_SECRET` with commas between them. This also lets you rotate a secret without missing events. A pg_cron job removes nonces older than 10 minutes.
 
@@ -177,6 +186,18 @@ deno task types
 
 `deno task test` proves that every operation in `openapi.json` has a tested path. It also proves that every event type gets a receiver result. The SQL tests check each foreign table against `openapi.json`. They also run the pgTAP tests in `supabase/tests/database`, which check the tables, row level security, policies, functions, grants and indexes. `supabase test db` runs the same pgTAP tests on `supabase start`. `deno task test:stack` runs against `supabase start`. `deno task generate` rebuilds the operation list and the foreign tables from `openapi.json`. `deno task types` regenerates `supabase/functions/_shared/database.types.ts` from `supabase start`. `bin/check-local` installs the pinned Deno with Bun. Then it runs the checks and tests.
 
+## Questions
+
+### Do I need an X developer account?
+
+No. Public reads need only an Xquik API key. Private reads & X account actions
+need a connected X account.
+
+### Is this the official X API?
+
+No. Xquik is an independent third-party service with its own REST API. This toolkit
+calls that API, not the official X API.
+
 ## Documentation
 
 - [Xquik Supabase guide](https://docs.xquik.com/guides/supabase)
@@ -187,3 +208,13 @@ deno task types
 - [Contributing](CONTRIBUTING.md)
 
 Xquik is an independent third-party service. Not affiliated with X Corp. "Twitter" and "X" are trademarks of X Corp.
+
+## More Xquik tools
+
+- [X (Twitter) scraper API & Twitter MCP server](https://github.com/Xquik-dev/x-twitter-scraper) with REST, MCP & Skill setup.
+- Twitter API SDKs for [TypeScript](https://github.com/Xquik-dev/x-twitter-scraper-typescript), [Python](https://github.com/Xquik-dev/x-twitter-scraper-python), [Go](https://github.com/Xquik-dev/x-twitter-scraper-go), [Ruby](https://github.com/Xquik-dev/x-twitter-scraper-ruby), [Java](https://github.com/Xquik-dev/x-twitter-scraper-java), [Kotlin](https://github.com/Xquik-dev/x-twitter-scraper-kotlin), [C#](https://github.com/Xquik-dev/x-twitter-scraper-csharp) & [PHP](https://github.com/Xquik-dev/x-twitter-scraper-php).
+- [Twitter CLI & X CLI](https://github.com/Xquik-dev/x-twitter-scraper-cli), the [X API alternative skill](https://github.com/Xquik-dev/x-api) and [Twitter advanced search operators](https://github.com/Xquik-dev/x-twitter-advanced-search) with tested examples.
+- Twitter agent plugins for [OpenClaw](https://github.com/Xquik-dev/tweetclaw) & [Hermes Agent](https://github.com/Xquik-dev/hermes-tweet), and the [Twitter API documentation source](https://github.com/Xquik-dev/xquik-docs).
+- Twitter integrations for [n8n](https://github.com/Xquik-dev/n8n-nodes-xquik), [Prefect](https://github.com/Xquik-dev/prefect-xquik), [Haystack](https://github.com/Xquik-dev/xquik-haystack), [Paperclip](https://github.com/Xquik-dev/paperclip-plugin-xquik), [Terraform](https://github.com/Xquik-dev/terraform-provider-x-twitter-scraper), [Convex](https://github.com/Xquik-dev/xquik-convex), [Supabase](https://github.com/Xquik-dev/xquik-supabase) & [Strapi](https://github.com/Xquik-dev/strapi-plugin-xquik).
+- Twitter MCP for [AI agents](https://github.com/Xquik-dev/xquik-mcp), [VS Code](https://github.com/Xquik-dev/xquik-vscode) & [Raycast](https://github.com/Xquik-dev/xquik-raycast).
+- [Xquik X API & Twitter scraper](https://xquik.com) and the [Twitter API documentation](https://docs.xquik.com/api-reference/overview).
