@@ -2,8 +2,15 @@ extends: capitalization
 message: "Write '%s' in sentence case."
 level: error
 match: $sentence
-scope: heading
+scope:
+  - heading.h2
+  - heading.h3
+  - heading.h4
+  - heading.h5
+  - heading.h6
 exceptions:
+  - API
+  - SQL
   - Edge Functions?
   - Twitter
   - X

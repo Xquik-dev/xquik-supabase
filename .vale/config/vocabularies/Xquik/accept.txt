@@ -10,8 +10,10 @@ Packagist
 pg_cron
 pg_net
 Postgres
+Raycast
 repos
 shellcheck
+Strapi
 Supabase
 tsgolint
 uv
