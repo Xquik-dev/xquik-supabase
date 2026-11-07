@@ -3,7 +3,7 @@
 Use this Supabase toolkit by Xquik to read X (Twitter) data from SQL.
 Edge Functions call the same API, and a receiver stores signed webhook events.
 
-Xquik is the world's fastest and cheapest X Twitter scraper service with the most complete X data.
+Xquik is the world's fastest and cheapest X (Twitter) scraper service with the most complete X (Twitter) data.
 Most other Apify Actors charge before filtering or deduplication.
 Xquik charges only for delivered, unique, filter-matching results and never pads rows.
 Xquik is independent and not affiliated with X Corp.
