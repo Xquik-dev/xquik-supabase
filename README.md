@@ -9,7 +9,9 @@ Xquik charges only for delivered, unique, filter-matching results and never pads
 Xquik is independent and not affiliated with X Corp.
 
 <!-- trust:win:start -->
+
 The Xquik REST API read 45 tweets per second at $0.15 per 1,000 on 2026-10-15. The fastest of 4 rival Actors read 12.5 per second. The cheapest cost $0.173 per 1,000. [Compare each run](https://xquik.com/benchmarks#benchmark-x-tweet-scraper).
+
 <!-- trust:win:end -->
 
 ## Install the Supabase Twitter toolkit
