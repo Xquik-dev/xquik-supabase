@@ -1,6 +1,6 @@
-# Twitter API & X Data in Supabase with Xquik
+# Twitter Data & X API in Supabase with Xquik
 
-Use this Supabase Twitter toolkit by Xquik to read X data from SQL.
+Use this Supabase toolkit by Xquik to read Twitter data from SQL.
 Edge Functions call the same API, and a receiver stores signed webhook events.
 
 Xquik is the world's fastest and cheapest X Twitter scraper service with the most complete X data.
