@@ -1,0 +1,10 @@
+extends: capitalization
+message: "Write '%s' in Chicago title case."
+level: error
+match: $title
+style: Chicago
+scope: heading.h1
+exceptions:
+  - API
+  - X
+  - Xquik
