@@ -1,5 +1,6 @@
 Apify
 cron
+deduplication
 Deno
 gitleaks
 jq
@@ -12,6 +13,7 @@ pg_net
 Postgres
 Raycast
 repos
+SDKs
 shellcheck
 Strapi
 Supabase
