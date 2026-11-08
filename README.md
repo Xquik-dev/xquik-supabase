@@ -141,7 +141,7 @@ limit 1;
 ```
 
 `status` moves from `sent` to `succeeded` or `failed`.
-pg_net sends only GET, POST & DELETE.
+pg_net sends only `GET`, `POST` & `DELETE`.
 Run PATCH & PUT operations with `xquik.call`.
 
 ## Receive X (Twitter) webhook events
