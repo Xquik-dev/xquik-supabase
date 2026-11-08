@@ -1,0 +1,20 @@
+cff-version: 1.2.0
+message: If you use Xquik Supabase Twitter toolkit, cite it using this metadata.
+title: Xquik Supabase Twitter toolkit
+type: software
+abstract: >-
+  Supabase Twitter toolkit for Xquik. Call the Twitter API from Edge Functions
+  & SQL and receive signed Twitter webhook events in Supabase.
+authors:
+  - name: Xquik
+    website: https://xquik.com
+url: https://github.com/Xquik-dev/xquik-supabase
+repository-code: https://github.com/Xquik-dev/xquik-supabase
+license: Apache-2.0
+keywords:
+  - Xquik
+  - Supabase Twitter
+  - Twitter webhook
+  - Twitter API SQL
+  - Supabase Edge Functions
+  - X API
