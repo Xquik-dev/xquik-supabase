@@ -45,7 +45,7 @@ async function generateIn(dir: string): Promise<z.infer<typeof summary>> {
 }
 
 Deno.test("the latest registry & foreign table migrations match a fresh generation from openapi.json", async () => {
-  const fresh = { [REGISTRY_SUFFIX]: renderMigration(rows), [FOREIGN_TABLES_SUFFIX]: renderForeignTables(tables) };
+  const fresh = { [FOREIGN_TABLES_SUFFIX]: renderForeignTables(tables), [REGISTRY_SUFFIX]: renderMigration(rows) };
   await Promise.all(
     Object.entries(fresh).map(async ([suffix, sql]) => {
       const latest = latestMigration(suffix);
