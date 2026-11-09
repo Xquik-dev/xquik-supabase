@@ -139,6 +139,9 @@ fill_cache() {
   extract "${postgrest_image}@${postgrest_digest}" "${cache}/${postgrest_digest}"
   bundle_main_service
   bin/own-link "${postgres_dir}/nix/store" "${store_link}"
+  # A worker boot looks up every deno.lock version in the edge runtime's cached npm metadata and answers 503 for a
+  # version newer than that metadata. The failed boot refreshes it, so each dependency bump failed once per machine.
+  [[ ! -d "${cache}/deno/npm" ]] || find "${cache}/deno/npm" -name registry.json -delete
   flock --unlock "${lock}"
 }
 
