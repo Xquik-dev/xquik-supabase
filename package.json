@@ -6,7 +6,7 @@
     "oxlint": "1.92.0",
     "oxlint-tsgolint": "7.0.2006",
     "squawk-cli": "2.70.0",
-    "supabase": "2.122.0",
+    "supabase": "3.0.0",
     "typescript": "6.0.3"
   }
 }
