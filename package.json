@@ -2,7 +2,7 @@
   "private": true,
   "devDependencies": {
     "deno": "2.9.6",
-    "fallow": "3.40.0",
+    "fallow": "3.42.0",
     "oxlint": "1.92.0",
     "oxlint-tsgolint": "7.0.2006",
     "squawk-cli": "2.70.0",
