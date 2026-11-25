@@ -4,7 +4,7 @@
     "deno": "2.9.6",
     "fallow": "3.40.0",
     "oxlint": "1.92.0",
-    "oxlint-tsgolint": "7.0.2006",
+    "oxlint-tsgolint": "7.0.2007",
     "squawk-cli": "2.70.0",
     "supabase": "2.122.0",
     "typescript": "6.0.3"
